@@ -49,7 +49,6 @@ const InviteUser = ({ user, orgId }: { user: User; orgId: string }) => {
         onClick={async () => {
           await inviteUser(orgId, user.name!, inviteeEmail);
           setInviteeEmail("");
-          alert("Invite sent successfully");
         }}
         className="bg-violet-500 text-white p-2 rounded-md"
       >

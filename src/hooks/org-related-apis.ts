@@ -70,6 +70,7 @@ export const useInviteUser = () => {
             const token = await getAccessTokenSilently();
             const response = await api.post(`api/v1/orgs/${orgId}/invitations`, {inviter_name: inviterName, invitee_email: inviteeEmail}, {headers: {Authorization: `Bearer ${token}`}});
             if (response.status === 201) {
+                alert("Invite sent successfully");
                 console.log("User invited successfully");
             }
             else if (response.status === 401 || response.status === 403) {
