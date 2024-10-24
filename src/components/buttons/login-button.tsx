@@ -1,7 +1,39 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import PageLoader from "../page-loader";
 
 export const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const handleLoginWithParams = async () => {
+      setLoading(true);
+      const params = new URLSearchParams(window.location.search);
+      const organization = params.get("organization");
+      const invitation = params.get("invitation");
+
+      if (organization && invitation) {
+        await loginWithRedirect({
+          appState: {
+            returnTo: `/profile`,
+          },
+          authorizationParams: {
+            organization,
+            invitation,
+          },
+        });
+      }
+      setLoading(false);
+    };
+    handleLoginWithParams();
+  }, [navigate]);
+
+  if (loading) {
+    return <PageLoader />;
+  }
 
   const handleLogin = async () => {
     await loginWithRedirect({
